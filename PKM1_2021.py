@@ -1,16 +1,10 @@
 #Oh shit, here we go again
-# %% Etap I
-#C:\Users\domin\OneDrive\Desktop\PKM1_2021_Dziurdź\roboczy
-#ladujExcel(etap1,etap2,etap3,etap4,etap5,etap6,etap7,etap8,etap9,etap10);
 import sys
-sys.path.append(r'C:\Users\HP\Desktop\PKM1')
 import math as m
 import sympy as sp
+import pandas as pd
 import funkcje_PKM as PKM
-# %%
-#wpust = PKM.doborWpustu(24)
-#print(wpust)
-
+sys.path.append(r'C:\Users\HP\Desktop\PKM1')
 # %% ETAP I
 Q = 15.5e03;
 W = 235;
@@ -71,7 +65,7 @@ etap1['lambda_gr'] = lambda_gr;
 sruba = PKM.doborGwintu(d_min);
 
 # clear delta d1 d2  A B C wzor d_min
-print(f'ETAP I :\n{etap1}\n Śruba:\n{sruba}')
+
 # %% ETAP II
 mu_min = 0.08;
 gamma = m.degrees(m.atan( sruba['P']/(m.pi*sruba['d_2']) ));
@@ -89,7 +83,7 @@ etap2['mu_min'] = mu_min;
 etap2['rho_prime_min'] = rho_prime_min;
 etap2['gamma'] =gamma;
 
-print(f'ETAP II :\n{etap2}')
+
 # %% Etap III
 d_r = sruba['d_3'];
 d_s = sruba['d_2'];
@@ -117,7 +111,7 @@ etap3['tau_s'] = tau_s;
 etap3['sig_z']= sig_z;
 etap3['X_rz'] = X_rz;
 
-print(f'ETAP III :\n{etap3}')
+
 
 # %% Etap IV
 #materiał nakrętki
@@ -150,20 +144,20 @@ p_s_zeliwo = 0.8*k_c_zeliwo;
 p_s_braz = 0.8*k_c_braz;
 
 if p_r_braz > p_r_zeliwo:
-    print('dla żeliwa mniejsze');
+    #print('dla żeliwa mniejsze');
     p_r = p_r_zeliwo;
 else:
-    print('dla brązu mniejsze')
+    #print('dla brązu mniejsze')
     p_r = p_r_braz;
 
 p_r = round(p_r);
 
 if p_s_braz>p_s_zeliwo:
-    print('dla żeliwa mniejsze');
+    #print('dla żeliwa mniejsze');
     p_s = p_s_zeliwo;
     
 else:
-    print('dla brązu mniejsze')
+    #print('dla brązu mniejsze')
     p_s = p_s_braz;
 
 p_s = round(p_s - p_s % 10);
@@ -207,7 +201,7 @@ etap4['D_N_1'] = D_N_1_excel;
 etap4['p_s'] = p_s;
 etap4['D_N_2'] = D_N_2_excel;
 etap4['D_N'] = D_N;
-print(f'ETAP IV :\n{etap4}')
+
 
 
 # clear A_c A_1 D_N_1 D_N_2 naciskiRuchowe naciskiStatyczne + ...
@@ -268,7 +262,7 @@ etap5['delta_m'] = delta_m;
 etap5['PAS'] = 'H7/s6';
 etap5['delta_m_min'] = delta_m_min;
 etap5['delta_m_max'] = delta_m_max;
-print(f'ETAP V :\n{etap5}')
+
 # %%Etap VI
 delta_max = delta_m_max - 2*a*(h_1 + h_2);#[um]
 p_max = (delta_max*10**-3/D_N)*( 1/(C_1/E_1 + C_2/E_2) );#[MPa]
@@ -282,7 +276,7 @@ etap6['delta_max'] = delta_max;
 etap6['p_max'] = p_max;
 etap6['sigma_1_red'] = sigma_1_red;
 etap6['sigma_2_red'] = sigma_2_red;
-print(f'ETAP VI :\n{etap6}')
+
 
 # %%Etap VII
 phi_z = D_N - 2;
@@ -340,7 +334,7 @@ etap7['F_w'] = F_w;
 etap7['d_t'] = d_t;
 etap7['k_t_m.pierscien'] = k_t_pierscien;
 etap7['g_p'] = g_p;
-print(f'ETAP VII :\n{etap7}')
+
 
 # %% Etap VIII
 T = 250e-03;
@@ -395,7 +389,7 @@ etap8['p_s'] = p_s;
 etap8['l_c'] = l_c;
 etap8['l'] = l_cal_wpust_norma;
 
-print(f'ETAP VIII :\n{etap8}')
+
 # %%
 #Etap IX
 #wymiary koła
@@ -529,7 +523,7 @@ etap9['XY'] = '5.6';
 etap9['k_g_sworznia'] = k_g_sworznia;
 etap9['sigma_z'] = sigma_z_4;
 etap9['k_g_zapadka'] = k_g_zapadka;
-print(f'ETAP IX :\n{etap9}')
+
 
 # %%Etap X
 # Tutaj patrzyłem jak wygląda to u niego na prezentacji i mi wyszły takie
@@ -615,7 +609,9 @@ etap10['d_rura'] = d_rura;
 etap10['sigma_g_rura'] = sigma_g_rura;
 etap10['k_g_rura'] = k_g_rura;
 etap10['sigma_d'] = sigma_d;
-print(f'ETAP X :\n{etap10}')
+
+
+
 
 # %%Etap XI
 p_dop = 3;
@@ -661,5 +657,12 @@ h_p_korpus = sp.solve(eq);
 h_p_korpus = m.ceil(h_p_korpus[0]);
 
 spr = Q*6/(M_c*2*m.pi)
+# %%
 
-
+nazwy = [f'Etap{i}' for i in range(1,11) ]
+etapy = [etap1, etap2, etap3, etap4, etap5, etap6, etap7, etap8, etap9, etap10]
+sciezka=r'C:\Users\HP\Desktop\PKM1\B00_Karta Wyników PKM_I.xlsx'
+PKM.ladujexcel(etapy,nazwy, sciezka)
+# %% Wyswietl etapy
+# for i in range(len(etapy)):
+    # print(f'{nazwy[i]} :\n{etapy[i]}')

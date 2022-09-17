@@ -2,55 +2,22 @@
 #funkcje_PKM.py
 #
 # -*- coding: utf-8 -*-
-"""
-Created on Sun Jul 24 22:30:09 2022
 
-@author: HP
-"""
 import sys
-sys.path.append(r'C:\Users\HP\my_python_modules')
+import pandas as pd
 import normy as normy
-# def ladujExcel (Etap1,Etap2,Etap3,Etap4,Etap5,Etap6,Etap7,Etap8,Etap9,Etap10):
-    
-#     nazwaPliku = r'C:\Users\domin\OneDrive\Desktop\PKM1_2021_Dziurdź\roboczy\B05_Karta wyników PKM_I.xlsx'
-#     numerArkusza = 1;
-#     zakres = 'F32:J32';
-#     struct2ExcelHorizontal(Etap1, nazwaPliku, numerArkusza, zakres);
-    
-#     zakres = 'K32:T32';
-#     struct2ExcelHorizontal(Etap2, nazwaPliku, numerArkusza, zakres);
-    
-#     zakres = 'U32:AC32';
-#     struct2ExcelHorizontal(Etap3, nazwaPliku, numerArkusza, zakres);
-    
-#     zakres = 'F40:M40';
-#     struct2ExcelHorizontal(Etap4, nazwaPliku, numerArkusza, zakres);
-    
-#     zakres = 'N40:Y40';
-#     struct2ExcelHorizontal(Etap5, nazwaPliku, numerArkusza, zakres);
-    
-#     zakres = 'Z40:AC40';
-#     struct2ExcelHorizontal(Etap6, nazwaPliku, numerArkusza, zakres);
-    
-#     zakres = 'F48:T48';
-#     struct2ExcelHorizontal(Etap7, nazwaPliku, numerArkusza, zakres);
-    
-#     zakres = 'G57:S57';
-#     struct2ExcelHorizontal(Etap8, nazwaPliku, numerArkusza, zakres);
-    
-#     zakres = 'F66:AB66';
-#     struct2ExcelHorizontal(Etap9, nazwaPliku, numerArkusza, zakres);
-    
-#     zakres = 'F75:X75';
-#     struct2ExcelHorizontal(Etap10, nazwaPliku, numerArkusza, zakres);
-
-
-
-# def struct2ExcelHorizontal(struct,nazwaPliku,numerArkusza,zakres):
-
-#     etap = struct2cell(struct);
-#     writecell(etap,nazwaPliku,'Sheet',numerArkusza,'Range',zakres);
-    
+sys.path.append(r'C:\Users\HP\my_python_modules')
+def ladujexcel(etapy, nazwy, path):
+    if type(etapy) != list or type(nazwy) != list :
+        raise TypeError('Oba argumenty muszą być listami')
+    if len(etapy) != len(nazwy):
+        raise ValueError('Oba argumenty muszą być tych samych długości')
+    dataframes = []
+    for i in range(len(etapy)):
+        dataframes.append(pd.DataFrame.from_dict(etapy[i], orient='index', columns=[nazwy[i]]))
+    for i in range(len(dataframes)):
+        with pd.ExcelWriter(path,engine="openpyxl",mode='a',if_sheet_exists='replace') as writer:
+            dataframes[i].to_excel(writer, sheet_name=nazwy[i])
 
 def doborWpustu(d):# wyjscie: dobrany wpust
     dobranyWpust={};
